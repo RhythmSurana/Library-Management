@@ -1,199 +1,282 @@
 #include <iostream>
-#include "main.h"
-#include <string.h>
-#include <stdio.h>
-#include <time.h>
+#include <cstring>
+#include <ctime>
 #include <fstream>
+#include <cstdio>
 
 using namespace std;
 
-/* run this program using the console pauser or add your own getch, 
-   system("pause") or input loop */
+// Admin & User Credentials
+#define ADMINUSER "admin"
+#define ADMINPASSWORD "1234"
+#define USER "student"
+#define USERPASSWORD "1234"
 
-int main(int argc, char** argv) {
-	
-int outerChoice = 0;
-while(outerChoice!=9){
-	system("cls");
-	cout<<"\n Library Management Version 1.0 \n\n";
-	cout<<"\n1. Amin";
-	cout<<"\n2. User";
-	cout<<"\n9. Exit";
-	cout<<"\n\nEnter your choice : ";
-	cin>>outerChoice;
-	
-	if( outerChoice == 1 )
-	{
-	char adminUser[10];
-	char adminPassword[10];
-	
-	system("cls");
-	cout<<"\n ---------- Admin Login -------";
-	cout<<"\n\n Enter username: ";
-	cin>>adminUser;
-	cout<<"\n Enter password:";
-	cin>>adminPassword;
-	if( (strcmp(adminUser, ADMINUSER) == 0) && 
-	    ( strcmp(adminPassword, ADMINPASSWORD) == 0)){
-        
-	getchar(); getchar();
-	system("cls");
-	int innerChoice = 0;
-	while(innerChoice != 9){
-	cout<<"\n\n Admin Login is Successful !! Press any key to continue..";	
-	cout<<"\n1. Add Book";
-	cout<<"\n2. Update Book";
-	cout<<"\n3. Delete Book";
-	cout<<"\n4. List of All Books";
-	cout<<"\n9. Exit";
-	cout<<"\n\n Enter your choice : ";
-	cin>>innerChoice;
-        switch(innerChoice){
-    	case 1: addBook(); break;
-    	case 2: updateBook(); break;
-    	case 3: deleteBook(); break;
-    	case 4: listOfAllBooks(); break;
-    	default: cout<<"\n\n Invalid Choice. Press any key to continue..";
-    	         getchar();
-	}
-	system("cls");
+// Function Prototypes
+int addBook();
+int deleteBook();
+int updateBook();
+int listOfAllBooks();
+int borrowBook();
+int returnBook();
+
+int main() {
+
+    int outerChoice = 0;
+
+    while (outerChoice != 9) {
+        system("cls");
+        cout << "\n Library Management System \n";
+        cout << "\n1. Admin";
+        cout << "\n2. User";
+        cout << "\n9. Exit";
+        cout << "\n\nEnter your choice: ";
+        cin >> outerChoice;
+
+        if (outerChoice == 1) {
+
+            char adminUser[20];
+            char adminPassword[20];
+
+            cout << "\nAdmin Login";
+            cout << "\nUsername: ";
+            cin >> adminUser;
+            cout << "Password: ";
+            cin >> adminPassword;
+
+            if (strcmp(adminUser, ADMINUSER) == 0 &&
+                strcmp(adminPassword, ADMINPASSWORD) == 0) {
+
+                int innerChoice = 0;
+                while (innerChoice != 9) {
+
+                    system("cls");
+                    cout << "\nAdmin Panel\n";
+                    cout << "1. Add Book";
+                    cout << "\n2. Update Book";
+                    cout << "\n3. Delete Book";
+                    cout << "\n4. List All Books";
+                    cout << "\n9. Exit";
+                    cout << "\nChoice: ";
+                    cin >> innerChoice;
+
+                    switch (innerChoice) {
+                        case 1: addBook(); break;
+                        case 2: updateBook(); break;
+                        case 3: deleteBook(); break;
+                        case 4: listOfAllBooks(); break;
+                    }
+                }
+            }
+            else {
+                cout << "\nInvalid Credentials!";
+                getchar(); getchar();
+            }
+        }
+
+        else if (outerChoice == 2) {
+
+            char user[20], pass[20];
+
+            cout << "\nUser Login";
+            cout << "\nUsername: ";
+            cin >> user;
+            cout << "Password: ";
+            cin >> pass;
+
+            if (strcmp(user, USER) == 0 &&
+                strcmp(pass, USERPASSWORD) == 0) {
+
+                int innerChoice = 0;
+                while (innerChoice != 9) {
+
+                    system("cls");
+                    cout << "\nUser Panel\n";
+                    cout << "1. Borrow Book";
+                    cout << "\n2. Return Book";
+                    cout << "\n3. List All Books";
+                    cout << "\n9. Exit";
+                    cout << "\nChoice: ";
+                    cin >> innerChoice;
+
+                    switch (innerChoice) {
+                        case 1: borrowBook(); break;
+                        case 2: returnBook(); break;
+                        case 3: listOfAllBooks(); break;
+                    }
+                }
+            }
+            else {
+                cout << "\nInvalid Credentials!";
+                getchar(); getchar();
+            }
+        }
     }
-		       		
-	}
-	else
-	{
-	cout<<"\n\n Error : Invalid Credentials. Press any key to conitnue";
-	getchar();getchar();
-	}
-					
-	}
-	else if(outerChoice ==2) {			    
-		char studentUser[10];
-		char studentPassword[10];
-		    
-		system("cls");
-		cout<<"\n ---------- Student Login -------";
-		cout<<"\n\n Enter username: ";
-		cin>>studentUser;
-		cout<<"\n Enter password:";
-		cin>>studentPassword;
-		    
-		if( (strcmp(studentUser, USER) ==0)  && 
-		    (strcmp(studentPassword, USERPASSWORD) == 0)){
-		int innerChoice = 0;
-		while(innerChoice != 9){
-		system("cls");
-	     	cout<<"\n1. Borrow a Book";
-	     	cout<<"\n2. Return a Book";
-	     	cout<<"\n3. List of All Books";
-	     	cout<<"\n9. Exit";  
-		cout<<"\n\n Enter your choice : ";
-		cin>>innerChoice; 	
-		
-		switch(innerChoice){
-		case 1: borrowBook();break;
-		case 2: returnBook();break;
-		case 3: listOfAllBooks(); break;
-		case 9: break;
-		default: cout<<"\n\n Error: Invalid Choice. Press any key to continue..";
-		getchar();getchar();
-			
-		}
-				
-		}
-		system("cls");
-		}
-		else
-		{
-		cout<<"\n\n Error : Invalid Credentials. Press any key to conitnue";
-		getchar();getchar();
-			
-		}
-	}
-	else if(outerChoice!=9){
-		cout<<"\n\n Invalid choice. Press any key to continue..";
-		getchar();getchar();
-	}
-	else
-	{
-		cout<<"\n\n Thank you for using it !! Press any key to exit";
-		getchar();getchar();
-	}
+
+    return 0;
 }
 
-return 0;
+int addBook() {
+
+    int id;
+    char name[50], author[50];
+
+    cout << "\nEnter Book ID: ";
+    cin >> id;
+
+    cout << "Enter Book Name: ";
+    cin >> name;
+
+    cout << "Enter Author Name: ";
+    cin >> author;
+
+    char filename[30];
+    sprintf(filename, "%d.dat", id);
+
+    ofstream file(filename);
+
+    file << name << endl;
+    file << author << endl;
+    file << "Available" << endl;
+
+    file.close();
+
+    cout << "\nBook Added Successfully!";
+    getchar(); getchar();
+
+    return 0;
 }
 
-int addBook(){
-int bookid;
-char bookname[20];
-char bookauthor[20];
-int year, month, day;
+int deleteBook() {
 
-time_t t = time(NULL);
-struct tm tm = *localtime(&t);
+    int id;
+    cout << "\nEnter Book ID to delete: ";
+    cin >> id;
 
-year = tm.tm_year + 1900;
-month = tm.tm_mon +1;
-day = tm.tm_mday;
+    char filename[30];
+    sprintf(filename, "%d.dat", id);
 
+    if (remove(filename) == 0)
+        cout << "\nBook Deleted Successfully!";
+    else
+        cout << "\nBook Not Found!";
 
-system("cls");
-cout<<"\n ---- Add a new Book ----";
-
-cout<<"\n\n Enter 4 digit numberic id :";
-cin>>bookid;
-cout<<"\n Enter book name : ";
-cin>>bookname;
-cout<<"\n Enter book author : ";
-cin>>bookauthor;
-
-char filename[20];
-
-sprintf(filename,"%d%s",bookid,".dat");
-
-ofstream file(filename);
-
-file<<bookname<<"\n";
-file<<bookauthor<<"\n";
-file<<year<<"\n";
-file<<month<<"\n";
-file<<day<<"\n";
-
-file.close();
-
-cout<<"\n File Saved Successfully !!";
-getchar(); getchar();	
+    getchar(); getchar();
+    return 0;
 }
 
-int deleteBook(){
-	
-	
+int updateBook() {
+
+    int id;
+    cout << "\nEnter Book ID to update: ";
+    cin >> id;
+
+    char filename[30];
+    sprintf(filename, "%d.dat", id);
+
+    ifstream file(filename);
+
+    if (!file) {
+        cout << "\nBook Not Found!";
+        getchar(); getchar();
+        return 0;
+    }
+
+    file.close();
+
+    char name[50], author[50];
+
+    cout << "\nEnter New Book Name: ";
+    cin >> name;
+    cout << "Enter New Author Name: ";
+    cin >> author;
+
+    ofstream file2(filename);
+    file2 << name << endl;
+    file2 << author << endl;
+    file2 << "Available" << endl;
+    file2.close();
+
+    cout << "\nBook Updated Successfully!";
+    getchar(); getchar();
+
+    return 0;
 }
 
-int updateBook(){
-	
-	
+int listOfAllBooks() {
+
+    system("dir *.dat");
+    getchar(); getchar();
+    return 0;
 }
 
-int listOfAllBooks(){
-	
-	
+int borrowBook() {
+
+    int id;
+    cout << "\nEnter Book ID to borrow: ";
+    cin >> id;
+
+    char filename[30];
+    sprintf(filename, "%d.dat", id);
+
+    ifstream file(filename);
+    if (!file) {
+        cout << "\nBook Not Found!";
+        getchar(); getchar();
+        return 0;
+    }
+
+    string name, author, status;
+    getline(file, name);
+    getline(file, author);
+    getline(file, status);
+    file.close();
+
+    if (status == "Borrowed") {
+        cout << "\nBook Already Borrowed!";
+    } else {
+        ofstream file2(filename);
+        file2 << name << endl;
+        file2 << author << endl;
+        file2 << "Borrowed" << endl;
+        file2.close();
+        cout << "\nBook Borrowed Successfully!";
+    }
+
+    getchar(); getchar();
+    return 0;
 }
 
-int borrowBook(){
-	
-	
-}
+int returnBook() {
 
-int returnBook(){
-	
-}
-int adminLogin(){
-	
-	
-}
+    int id;
+    cout << "\nEnter Book ID to return: ";
+    cin >> id;
 
-int userLogin(){
+    char filename[30];
+    sprintf(filename, "%d.dat", id);
 
+    ifstream file(filename);
+    if (!file) {
+        cout << "\nBook Not Found!";
+        getchar(); getchar();
+        return 0;
+    }
+
+    string name, author, status;
+    getline(file, name);
+    getline(file, author);
+    getline(file, status);
+    file.close();
+
+    ofstream file2(filename);
+    file2 << name << endl;
+    file2 << author << endl;
+    file2 << "Available" << endl;
+    file2.close();
+
+    cout << "\nBook Returned Successfully!";
+    getchar(); getchar();
+
+    return 0;
 }
